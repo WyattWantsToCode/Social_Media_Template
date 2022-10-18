@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/firebase.dart';
 import 'package:social_media_template/post_class.dart';
+import 'package:social_media_template/storage.dart';
 
 class SpecificPostSection extends StatelessWidget {
   const SpecificPostSection({Key? key}) : super(key: key);
@@ -80,14 +81,31 @@ class _SpecificPostState extends State<SpecificPost> {
             scrollDirection: Axis.horizontal,
             itemCount: widget.post.imageURLs.length,
             itemBuilder: ((context, index) {
-              return Container(
+              return FutureBuilder(
+      future: getPostImageURL(widget.post.imageURLs[index]),
+      builder: ((context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error"),
+            );
+          } else if (snapshot.hasData) {
+            return Container(
                 width: MediaQuery.of(context).size.width,
                 height: double.infinity,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(widget.post.imageURLs[index]),
+                        image: NetworkImage(snapshot.data.toString()),
                         fit: BoxFit.cover)),
               );
+          }
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }),
+    );
             }),
           ),
         ),
