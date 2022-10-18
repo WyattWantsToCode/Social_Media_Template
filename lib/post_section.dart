@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_template/colors.dart';
+import 'package:social_media_template/firebase.dart';
 import 'package:social_media_template/post_class.dart';
 
 class SpecificPostSection extends StatelessWidget {
@@ -8,13 +9,32 @@ class SpecificPostSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<PostClass> posts = <PostClass>[mockPost1, mockPost2, mockPost3];
-    return ListView.builder(
-        physics: PageScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: posts.length,
-        itemBuilder: ((context, index) {
-          return SpecificPost(post: posts[index]);
-        }));
+    return FutureBuilder(
+      future: getFivePosts(1234),
+      builder: ((context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error"),
+            );
+          } else if (snapshot.hasData) {
+            posts = snapshot.data as List<PostClass>;
+          
+            return ListView.builder(
+                physics: PageScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: posts.length,
+                itemBuilder: ((context, index) {
+                  return SpecificPost(post: posts[index]);
+                }));
+          }
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }),
+    );
   }
 }
 
@@ -47,7 +67,7 @@ class _SpecificPostState extends State<SpecificPost> {
               ),
             ),
             Text(
-              widget.post.user.name,
+              widget.post.user.displayName,
               style: nameStyle,
             )
           ],
@@ -57,11 +77,9 @@ class _SpecificPostState extends State<SpecificPost> {
           width: double.infinity,
           child: ListView.builder(
             physics: PageScrollPhysics(),
-
             scrollDirection: Axis.horizontal,
             itemCount: widget.post.imageURLs.length,
             itemBuilder: ((context, index) {
-              
               return Container(
                 width: MediaQuery.of(context).size.width,
                 height: double.infinity,
