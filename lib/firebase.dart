@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:social_media_template/post_class.dart';
+import 'package:social_media_template/story_class.dart';
 import 'package:social_media_template/user_class.dart';
 
 var db = FirebaseFirestore.instance;
@@ -42,10 +43,8 @@ Future<PostClass> getPostByID(String id) async {
 }
 
 PostClass mapToPosstClass(Map<String, dynamic> map, String id) {
-  print(map);
   List<String> imageURLs = <String>[];
   for (var string in map["imageURLs"]) {
-    print(map["imageURLs"]);
     imageURLs.add(string.toString());
   }
   return PostClass(
@@ -53,5 +52,23 @@ PostClass mapToPosstClass(Map<String, dynamic> map, String id) {
       imageURLs: imageURLs,
       description: map["description"],
       likes: mockPost1.likes,
-      user: mockUser1);
+      user: map["user"]);
 }
+
+Future<User> getUserByHandle(String handle) async {
+  final ref = db.collection("Users").doc(handle);
+  await ref.get().then((DocumentSnapshot documentSnapshot) {
+    mockUser1 =
+        mapToUser(documentSnapshot.data() as Map<String, dynamic>, handle);
+  });
+  return mockUser1;
+}
+
+User mapToUser(Map<String, dynamic> map, String handle) {
+  return User(
+      displayName: map["displayName"],
+      handle: handle,
+      profilePictureURL: map["profilePictureURL"]);
+}
+
+
