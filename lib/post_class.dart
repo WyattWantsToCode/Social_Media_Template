@@ -5,7 +5,7 @@ class PostClass {
   String ID;
   String description;
   int likes;
-  User user;
+  String user;
 
   PostClass(
       {
@@ -24,7 +24,7 @@ PostClass mockPost1 = PostClass(
     ],
     description: "Loved the mountains this weekend",
     likes: 100,
-    user: mockUser1);
+    user: "mockUser1");
 
 PostClass mockPost2 = PostClass(
   ID: "wertyuiopq",
@@ -33,10 +33,10 @@ PostClass mockPost2 = PostClass(
     ],
     description: "I am so thankful for this team... they mean the world to me",
     likes: 1200,
-    user: mockUser1);
+    user: "mockUser1");
 
 PostClass mockPost3 = PostClass(
   ID: "ertyuiopqw",
   imageURLs: <String>[
   "https://drive.google.com/uc?export=view&id=15xSw84vkAGezLXamCZM4oHxDRbGupybu",
-], description: "Food... I am better than you", likes: 2, user: mockUser2);
+], description: "Food... I am better than you", likes: 2, user: "mockUser2");
