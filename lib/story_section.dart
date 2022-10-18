@@ -50,7 +50,7 @@ class _StoryButtonState extends State<StoryButton> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 5),
-            child: Text(widget.user.name, style: nameStyle.apply(fontSizeFactor: .85),),
+            child: Text(widget.user.displayName, style: nameStyle.apply(fontSizeFactor: .85),),
           )
         ],
       ),
