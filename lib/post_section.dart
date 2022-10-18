@@ -9,7 +9,7 @@ class SpecificPostSection extends StatelessWidget {
   Widget build(BuildContext context) {
     List<PostClass> posts = <PostClass>[mockPost1, mockPost2, mockPost3];
     return ListView.builder(
-      physics: ClampingScrollPhysics(),
+        physics: ClampingScrollPhysics(),
         shrinkWrap: true,
         itemCount: posts.length,
         itemBuilder: ((context, index) {
@@ -30,6 +30,7 @@ class _SpecificPostState extends State<SpecificPost> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -45,18 +46,58 @@ class _SpecificPostState extends State<SpecificPost> {
                         fit: BoxFit.cover)),
               ),
             ),
-            Text(widget.post.user.name, style: nameStyle,)
+            Text(
+              widget.post.user.name,
+              style: nameStyle,
+            )
           ],
         ),
-        Container(
-          width: double.infinity,
+        SizedBox(
           height: 500,
-          decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(widget.post.imageURLs[0]),
-            fit: BoxFit.cover
-          )
-        ),)
+          width: double.infinity,
+          child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+
+            scrollDirection: Axis.horizontal,
+            itemCount: widget.post.imageURLs.length,
+            itemBuilder: ((context, index) {
+              
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(widget.post.imageURLs[index]),
+                        fit: BoxFit.cover)),
+              );
+            }),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Icon(
+                  Icons.thumb_up_alt_outlined,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                widget.post.likes.toString(),
+                style: nameStyle,
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
+            widget.post.description,
+            style: nameStyle,
+          ),
+        )
       ],
     );
   }
