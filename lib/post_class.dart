@@ -26,5 +26,6 @@ PostClass mockPost2 = PostClass(
     likes: 1200, user: mockUser1);
 
 PostClass mockPost3 = PostClass(imageURLs: <String>[
-  "https://drive.google.com/uc?export=view&id=1bWw_Q4wvupbgrLRId6Khq5ogg-A8X8pi",
+  "https://drive.google.com/uc?export=view&id=15xSw84vkAGezLXamCZM4oHxDRbGupybu",
+
 ], description: "Food... I am better than you", likes: 2, user: mockUser2);
