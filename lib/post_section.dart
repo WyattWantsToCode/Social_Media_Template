@@ -9,7 +9,7 @@ class SpecificPostSection extends StatelessWidget {
   Widget build(BuildContext context) {
     List<PostClass> posts = <PostClass>[mockPost1, mockPost2, mockPost3];
     return ListView.builder(
-        physics: ClampingScrollPhysics(),
+        physics: PageScrollPhysics(),
         shrinkWrap: true,
         itemCount: posts.length,
         itemBuilder: ((context, index) {
@@ -56,7 +56,7 @@ class _SpecificPostState extends State<SpecificPost> {
           height: 500,
           width: double.infinity,
           child: ListView.builder(
-            physics: BouncingScrollPhysics(),
+            physics: PageScrollPhysics(),
 
             scrollDirection: Axis.horizontal,
             itemCount: widget.post.imageURLs.length,
