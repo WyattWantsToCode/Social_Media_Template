@@ -7,3 +7,9 @@ Future<String> getPostImageURL(String string) async {
   var url = await ref.getDownloadURL();
   return url;
 }
+
+Future<String> getProfilePictureURL(String string) async {
+  final ref = storage.ref("Profile_Pictures").child(string);
+  var url = await ref.getDownloadURL();
+  return url;
+}
