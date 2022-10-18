@@ -3,6 +3,7 @@ import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/firebase.dart';
 import 'package:social_media_template/post_class.dart';
 import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/user_class.dart';
 
 class SpecificPostSection extends StatelessWidget {
   const SpecificPostSection({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class SpecificPostSection extends StatelessWidget {
             );
           } else if (snapshot.hasData) {
             posts = snapshot.data as List<PostClass>;
-          
+
             return ListView.builder(
                 physics: PageScrollPhysics(),
                 shrinkWrap: true,
@@ -53,25 +54,62 @@ class _SpecificPostState extends State<SpecificPost> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                width: 35,
-                height: 35,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: NetworkImage(widget.post.user.profilePictureURL),
-                        fit: BoxFit.cover)),
-              ),
-            ),
-            Text(
-              widget.post.user.displayName,
-              style: nameStyle,
-            )
-          ],
+        FutureBuilder(
+          future: getUserByHandle(widget.post.user),
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text("Error"),
+                );
+              } else if (snapshot.hasData) {
+                User user = snapshot.data as User;
+                return FutureBuilder(
+          future: getProfilePictureURL(user.profilePictureURL),
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text("Error"),
+                );
+              } else if (snapshot.hasData) {
+
+                return Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    snapshot.data as String),
+                                fit: BoxFit.cover)),
+                      ),
+                    ),
+                    Text(
+                      user.displayName,
+                      style: nameStyle,
+                    )
+                  ],
+                );
+              }
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
+        );
+              }
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
         ),
         SizedBox(
           height: 500,
@@ -82,30 +120,30 @@ class _SpecificPostState extends State<SpecificPost> {
             itemCount: widget.post.imageURLs.length,
             itemBuilder: ((context, index) {
               return FutureBuilder(
-      future: getPostImageURL(widget.post.imageURLs[index]),
-      builder: ((context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text("Error"),
-            );
-          } else if (snapshot.hasData) {
-            return Container(
-                width: MediaQuery.of(context).size.width,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(snapshot.data.toString()),
-                        fit: BoxFit.cover)),
-              );
-          }
-        }
+                future: getPostImageURL(widget.post.imageURLs[index]),
+                builder: ((context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Error"),
+                      );
+                    } else if (snapshot.hasData) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(snapshot.data.toString()),
+                                fit: BoxFit.cover)),
+                      );
+                    }
+                  }
 
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }),
-    );
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
+              );
             }),
           ),
         ),
@@ -138,3 +176,5 @@ class _SpecificPostState extends State<SpecificPost> {
     );
   }
 }
+
+
