@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/user_class.dart';
 
 class StorySection extends StatelessWidget {
@@ -8,7 +9,7 @@ class StorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     List<User> users = <User>[mockUser1, mockUser2];
     return SizedBox(
-      height: 150,
+      height: 135,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
@@ -36,14 +37,22 @@ class _StoryButtonState extends State<StoryButton> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Container(
-        width: 85,
-        height: 85,
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                image: NetworkImage(widget.user.profilePictureURL),
-                fit: BoxFit.cover)),
+      child: Column(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: NetworkImage(widget.user.profilePictureURL),
+                    fit: BoxFit.cover)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(widget.user.name, style: nameStyle.apply(fontSizeFactor: .85),),
+          )
+        ],
       ),
     );
   }
