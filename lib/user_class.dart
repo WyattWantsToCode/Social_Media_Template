@@ -1,4 +1,4 @@
-import 'package:social_media_template/post_class.dart';
+import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/story_class.dart';
 
 class User {
