@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:social_media_template/Navigation/bottom_bar.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/post_section.dart';
+import 'package:social_media_template/Posts/post_section.dart';
 import 'package:social_media_template/story_section.dart';
 import 'package:social_media_template/user_class.dart';
 
