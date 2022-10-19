@@ -52,3 +52,4 @@ app.*.map.json
 /ios
 /linux
 /macos
+android/app/build.gradle
