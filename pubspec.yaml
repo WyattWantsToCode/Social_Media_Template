@@ -37,6 +37,11 @@ dependencies:
   firebase_core: ^1.24.0
   cloud_firestore: ^3.5.1
   firebase_storage: ^10.3.11
+  camera: ^0.10.0+3
+  image_picker: ^0.8.6
+  media_gallery: ^0.1.5
+  media_gallery2: ^0.1.11
+  photo_gallery: ^1.1.1
 
 dev_dependencies:
   flutter_test:
