@@ -15,9 +15,29 @@ Future<List<String>> getAllPostIDs() async {
     for (var postID in value.data()!["posts"]) {
       result.add(postID.toString());
     }
+    print(result);
     return result;
   });
   return result;
+}
+
+void addPostToDB(PostClass postClass) {
+  db.collection("Posts").doc(postClass.ID).set(postToMap(postClass));
+}
+
+void addPostToAppPosts(String id) async {
+  List<String> ids = await getAllPostIDs();
+  ids.add(id);
+  db.collection("Posts").doc("all_posts").set({"posts": ids});
+}
+
+Map<String, dynamic> postToMap(PostClass postClass) {
+  return {
+    "description": postClass.description,
+    "imageURLs": postClass.imageURLs,
+    "likes": postClass.likes,
+    "user": postClass.user
+  };
 }
 
 Future<List<PostClass>> getFivePosts(int? seed) async {
@@ -70,5 +90,3 @@ User mapToUser(Map<String, dynamic> map, String handle) {
       handle: handle,
       profilePictureURL: map["profilePictureURL"]);
 }
-
-
