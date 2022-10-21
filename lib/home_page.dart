@@ -14,23 +14,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<void> refreshPage() {
+    return Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorBackground,
       body: Column(
-
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [StorySection(),
-                Divider(color: Colors.white38,),
-                 SpecificPostSection()],
+            child: RefreshIndicator(
+              onRefresh: () {
+                return refreshPage();
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    //StorySection(),
+                    Divider(
+                      color: Colors.white38,
+                    ),
+                    SpecificPostSection()
+                  ],
+                ),
               ),
             ),
           ),
