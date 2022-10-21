@@ -1,0 +1,94 @@
+/*import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:social_media_template/colors.dart';
+
+class CreatePostPage extends StatelessWidget {
+  const CreatePostPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: colorBackground,
+        body: CreatePostSection(),
+      ),
+    );
+  }
+}
+
+class CreatePostSection extends StatefulWidget {
+  CreatePostSection({Key? key}) : super(key: key);
+
+  @override
+  State<CreatePostSection> createState() => _CreatePostSectionState();
+}
+
+class _CreatePostSectionState extends State<CreatePostSection> {
+  var selectedImage;
+  @override
+  Widget build(BuildContext context) {
+    var image;
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () async {
+            var result = await showDialog(
+                context: context,
+                builder: (context) {
+                  return MediaPicker();
+                });
+            selectedImage = result;
+          },
+          child: Text("Click me"),
+        ),
+        Container(
+          child: selectedImage != null
+              ? Image.file(
+                  selectedImage,
+                  width: 200,
+                  height: 200,
+                )
+              : Container(),
+        )
+      ],
+    );
+  }
+}
+
+class MediaPicker extends StatefulWidget {
+  MediaPicker({Key? key}) : super(key: key);
+
+  @override
+  State<MediaPicker> createState() => _MediaPickerState();
+}
+
+class _MediaPickerState extends State<MediaPicker> {
+  var image;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("New Post"),
+      content: Column(children: [
+        TextButton(
+          onPressed: () async {
+            ImagePicker picker = ImagePicker();
+            XFile? image = await picker.pickImage(source: ImageSource.gallery);
+            Navigator.pop(context, File(image!.path));
+          },
+          child: Text("Click me"),
+        ),
+        TextButton(
+          onPressed: () async {
+            ImagePicker picker = ImagePicker();
+            XFile? image = await picker.pickImage(source: ImageSource.camera);
+            Navigator.pop(context, File(image!.path));
+          },
+          child: Text("Click me"),
+        ),
+      ]),
+    );
+  }
+}
+*/
