@@ -15,7 +15,7 @@ class SpecificPostSection extends StatelessWidget {
   Widget build(BuildContext context) {
     List<PostClass> posts = <PostClass>[mockPost1, mockPost2, mockPost3];
     return FutureBuilder(
-      future: getFivePosts(1234),
+      future: getFivePosts(DateTime.now().microsecondsSinceEpoch),
       builder: ((context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
