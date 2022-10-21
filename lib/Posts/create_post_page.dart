@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:media_gallery2/media_gallery2.dart' as testing;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
+import 'package:social_media_template/Posts/add_caption.dart';
 
 import 'package:social_media_template/colors.dart';
+
+Medium? selectedMediumID;
 
 class CreatePostPage extends StatelessWidget {
   const CreatePostPage({Key? key}) : super(key: key);
@@ -33,6 +38,8 @@ class _CreatePostSectionState extends State<CreatePostSection> {
   List<DropdownMenuItem<Album>> dropDownItems = [];
   Album? currentAlbum;
 
+  final GlobalKey _key = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +51,8 @@ class _CreatePostSectionState extends State<CreatePostSection> {
     if (await _promptPermission()) {
       List<Album> albums =
           await PhotoGallery.listAlbums(mediumType: MediumType.image);
+      MediaPage imagePage = await albums[0].listMedia();
+      Medium firstImageID = imagePage.items.reversed.toList()[0];
 
       setState(() {
         _albums = albums;
@@ -54,6 +63,7 @@ class _CreatePostSectionState extends State<CreatePostSection> {
             value: album,
           ));
         }
+        selectedMediumID = firstImageID;
         loading = false;
       });
     }
@@ -74,23 +84,38 @@ class _CreatePostSectionState extends State<CreatePostSection> {
     return imagepage.items.reversed.toList();
   }
 
+  void updateSelected(Medium imageProvider) {
+    _key.currentState?.setState(() {
+      selectedMediumID = imageProvider;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    void updateSelectedImageID(String string) {}
     return loading
         ? CircularProgressIndicator()
         : Column(
             children: [
-              Expanded(
-                child: DropdownButton(
-                  
-                    style: TextStyle(fontSize: 2),
-                    value: currentAlbum,
-                    items: dropDownItems,
-                    onChanged: (Album? value) {
-                      setState(() {
-                        currentAlbum = value;
-                      });
-                    }),
+              TopNavBar(),
+              SelectedImage(
+                key: _key,
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  DropdownButton(
+                      dropdownColor: Colors.black,
+                      style: TextStyle(fontSize: 22),
+                      value: currentAlbum,
+                      items: dropDownItems,
+                      onChanged: (Album? value) {
+                        setState(() {
+                          currentAlbum = value;
+                        });
+                      }),
+                ],
               ),
               FutureBuilder(
                 future: getMediaPage(currentAlbum!),
@@ -102,7 +127,9 @@ class _CreatePostSectionState extends State<CreatePostSection> {
                       );
                     } else if (snapshot.hasData) {
                       return MediaGrid(
-                          mediumList: snapshot.data as List<Medium>);
+                        mediumList: snapshot.data as List<Medium>,
+                        updateState: updateSelected,
+                      );
                     }
                   }
 
@@ -116,9 +143,31 @@ class _CreatePostSectionState extends State<CreatePostSection> {
   }
 }
 
+class SelectedImage extends StatefulWidget {
+  SelectedImage({Key? key}) : super(key: key);
+
+  @override
+  State<SelectedImage> createState() => _SelectedImageState();
+}
+
+class _SelectedImageState extends State<SelectedImage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width,
+        child: Image(
+          fit: BoxFit.cover,
+          image: PhotoProvider(mediumId: selectedMediumID!.id),
+        ));
+  }
+}
+
 class MediaGrid extends StatefulWidget {
-  MediaGrid({Key? key, required this.mediumList}) : super(key: key);
+  MediaGrid({Key? key, required this.mediumList, required this.updateState})
+      : super(key: key);
   List<Medium> mediumList;
+  Function updateState;
 
   @override
   State<MediaGrid> createState() => _MediaGridState();
@@ -132,14 +181,64 @@ class _MediaGridState extends State<MediaGrid> {
         shrinkWrap: false,
         crossAxisCount: 4,
         children: List.generate(widget.mediumList.length, (index) {
-          return Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: ThumbnailProvider(
-                          highQuality: true,
-                          mediumId: widget.mediumList[index].id),
-                      fit: BoxFit.cover)));
+          return GestureDetector(
+            onTap: () {
+              widget.updateState(widget.mediumList[index]);
+            },
+            child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: ThumbnailProvider(
+                            highQuality: true,
+                            mediumId: widget.mediumList[index].id),
+                        fit: BoxFit.cover))),
+          );
         }),
+      ),
+    );
+  }
+}
+
+class TopNavBar extends StatefulWidget {
+  TopNavBar({Key? key}) : super(key: key);
+
+  @override
+  State<TopNavBar> createState() => _TopNavBarState();
+}
+
+class _TopNavBarState extends State<TopNavBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 32,
+              )),
+          Text(
+            "New Post",
+            style: TextStyle(color: Colors.white, fontSize: 22),
+          ),
+          TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return AddCaptionPage(mediumToPost: selectedMediumID!);
+                }));
+              },
+              child: Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+                size: 32,
+              ))
+        ],
       ),
     );
   }
