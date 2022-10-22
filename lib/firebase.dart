@@ -22,7 +22,10 @@ Future<List<String>> getAllPostIDs() async {
 }
 
 void addPostToDB(PostClass postClass) {
-  db.collection("Posts").doc(postClass.ID).set(postToMap(postClass));
+  db
+      .collection("Posts")
+      .doc(postClass.ID)
+      .set(postToMap(postClass), SetOptions(merge: true));
 }
 
 void addPostToAppPosts(String id) async {
@@ -36,7 +39,8 @@ Map<String, dynamic> postToMap(PostClass postClass) {
     "description": postClass.description,
     "imageURLs": postClass.imageURLs,
     "likes": postClass.likes,
-    "user": postClass.user
+    "user": postClass.user,
+    "timeStamp": postClass.timestamp
   };
 }
 
@@ -44,10 +48,13 @@ Future<List<PostClass>> getFivePosts(int? seed) async {
   Random random = new Random(seed);
   List<PostClass> posts = <PostClass>[];
   await getAllPostIDs().then((value) async {
-    for (int x = 0; x < 5; x++) {
+    for (int x = 0; x < value.length; x++) {
       int randomIndex = random.nextInt(value.length);
-      PostClass post = await getPostByID(value[randomIndex]);
+      PostClass post = await getPostByID(value[x]);
       posts.add(post);
+      posts.sort(((a, b) {
+        return b.timestamp.compareTo(a.timestamp);
+      }));
     }
   });
   return posts;
@@ -72,7 +79,8 @@ PostClass mapToPosstClass(Map<String, dynamic> map, String id) {
       imageURLs: imageURLs,
       description: map["description"],
       likes: map["likes"],
-      user: map["user"]);
+      user: map["user"],
+      timestamp: map["timeStamp"]);
 }
 
 Future<User> getUserByHandle(String handle) async {
@@ -89,4 +97,15 @@ User mapToUser(Map<String, dynamic> map, String handle) {
       displayName: map["displayName"],
       handle: handle,
       profilePictureURL: map["profilePictureURL"]);
+}
+
+Future<List<PostClass>> getPostFromHandle(String handle) async {
+  List<PostClass> posts = <PostClass>[];
+  final ref = db.collection("Posts").where("user", isEqualTo: handle);
+  await ref.get().then((value) {
+    value.docs.forEach((element) {
+      posts.add(mapToPosstClass(element.data(), element.id));
+    });
+  });
+  return posts;
 }
