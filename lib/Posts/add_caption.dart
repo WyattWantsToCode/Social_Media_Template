@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:social_media_template/Posts/post_class.dart';
@@ -107,7 +108,9 @@ class _TopNavBarState extends State<TopNavBar> {
                     imageURLs: <String>[id],
                     description: captionController.text,
                     likes: 0,
-                    user: currentUser.user.handle);
+                    user: currentUser.user.handle,
+                    timestamp: Timestamp.now()
+                    );
 
                 addPostToDB(newPost);
                 addPhotosToStorage(await medium!.getFile(), id);
