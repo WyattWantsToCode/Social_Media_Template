@@ -35,6 +35,10 @@ class _PostFooterState extends State<PostFooter> {
           ),
         ),
         Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(DateTime.fromMicrosecondsSinceEpoch(widget.post.timestamp.microsecondsSinceEpoch).toString(), style: nameStyle.apply(fontSizeDelta: -5),),
+        ),
+        Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
             widget.post.description,
