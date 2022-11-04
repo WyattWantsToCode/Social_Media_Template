@@ -15,7 +15,7 @@ Future<List<String>> getAllPostIDs() async {
     for (var postID in value.data()!["posts"]) {
       result.add(postID.toString());
     }
-    
+
     return result;
   });
   return result;
@@ -108,4 +108,13 @@ Future<List<PostClass>> getPostFromHandle(String handle) async {
     });
   });
   return posts;
+}
+
+void removePost(PostClass postClass) async {
+  print("Started");
+  List<String> ids = await getAllPostIDs();
+  ids.remove(postClass.ID);
+  db.collection("Posts").doc("all_posts").set({"posts": ids});
+  db.collection("Posts").doc(postClass.ID).delete();
+  print("Finished");
 }
