@@ -28,3 +28,8 @@ Future<Uint8List> compressFile(File file) async {
       minWidth: 1080, minHeight: 1080, quality: 50);
   return result!;
 }
+
+void removeImageFromStorage(String postID)  async{
+  final ref = storage.ref("Posts").child(postID);
+  await ref.delete();
+}
