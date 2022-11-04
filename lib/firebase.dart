@@ -15,7 +15,7 @@ Future<List<String>> getAllPostIDs() async {
     for (var postID in value.data()!["posts"]) {
       result.add(postID.toString());
     }
-    print(result);
+    
     return result;
   });
   return result;
@@ -57,7 +57,7 @@ Future<List<PostClass>> getFivePosts(int? seed) async {
       }));
     }
   });
-  return posts;
+  return posts.sublist(0, 5);
 }
 
 Future<PostClass> getPostByID(String id) async {
