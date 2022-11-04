@@ -58,6 +58,7 @@ class _SpecificPostState extends State<SpecificPost> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         PostHeader(post: widget.post),
         PostBody(post: widget.post),
