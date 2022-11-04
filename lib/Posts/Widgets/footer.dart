@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/colors.dart';
@@ -34,18 +35,61 @@ class _PostFooterState extends State<PostFooter> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(DateTime.fromMicrosecondsSinceEpoch(widget.post.timestamp.microsecondsSinceEpoch).toString(), style: nameStyle.apply(fontSizeDelta: -5),),
-        ),
+        
         Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
             widget.post.description,
             style: nameStyle,
           ),
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            timestampToString(widget.post.timestamp),
+            style: styleDateTime,
+          ),
+        ),
       ],
     );
   }
+}
+
+String timestampToString(Timestamp timestamp) {
+  Map<int, String> intToMonthMap = {
+    1: "Jan",
+    2: "Feb",
+    3: "Mar",
+    4: "Apr",
+    5: "May",
+    6: "Jun",
+    7: "Jul",
+    8: "Aug",
+    9: "Sep",
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
+  };
+  Timestamp currentTimeStamp = Timestamp.now();
+  int timeDifference = currentTimeStamp.seconds - timestamp.seconds;
+  DateTime dateTimeDifference = Timestamp(timeDifference, 0).toDate();
+
+  if (timeDifference < 60) {
+    return dateTimeDifference.second.toString() + " seconds ago";
+  }
+
+  if (timeDifference < 3600) {
+    return dateTimeDifference.minute.toString() + " minutes ago";
+  }
+  if (timeDifference < 86400) {
+    return dateTimeDifference.hour.toString() + " hours ago";
+  }
+
+  if (timeDifference < 1209600) {
+    return dateTimeDifference.day.toString() + " days ago";
+  }
+
+  return intToMonthMap[timestamp.toDate().month].toString() +
+      " " +
+      timestamp.toDate().day.toString()+ ", " + timestamp.toDate().year.toString();
 }
