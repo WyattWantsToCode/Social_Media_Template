@@ -42,12 +42,11 @@ class _PostHeaderState extends State<PostHeader> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            List<PostClass> posts = await getPostFromHandle(user.handle);
+                            List<PostClass> posts =
+                                await getPostFromHandle(user.handle);
                             Navigator.push(context,
                                 MaterialPageRoute(builder: ((context) {
-                              return UserProfilePage(
-                                  user: user,
-                                  posts: posts);
+                              return UserProfilePage(user: user, posts: posts);
                             })));
                           },
                           child: Row(
@@ -74,7 +73,9 @@ class _PostHeaderState extends State<PostHeader> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: (() {}),
+                          onTap: (() {
+                            showMenu(context, widget.post);
+                          }),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Icon(
@@ -103,4 +104,51 @@ class _PostHeaderState extends State<PostHeader> {
       }),
     );
   }
+}
+
+void showMenu(BuildContext context, PostClass postClass) {
+  Widget buttonChoice(IconData iconData, String text, Function() function) {
+    return GestureDetector(
+      onTap: function,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Icon(
+              iconData,
+              color: Colors.white,
+              size: 36,
+            ),
+            Text(
+              text,
+              style: TextStyle(fontSize: 36, color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: (context),
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+              color: colorDarkGray),
+          child: Column(
+            children: [
+              buttonChoice(Icons.delete, "Delete", () {
+                removePost(postClass);
+                for (var photoID in postClass.imageURLs) {
+                  removeImageFromStorage(photoID);
+                }
+                Navigator.pop(context);
+              })
+            ],
+          ),
+        );
+      });
 }
