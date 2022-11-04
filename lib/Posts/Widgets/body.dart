@@ -16,7 +16,7 @@ class _PostBodyState extends State<PostBody> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500,
+      height: MediaQuery.of(context).size.width,
       width: double.infinity,
       child: ListView.builder(
         physics: PageScrollPhysics(parent: BouncingScrollPhysics()),
@@ -35,10 +35,23 @@ class _PostBodyState extends State<PostBody> {
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     height: double.infinity,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(snapshot.data.toString()),
-                            fit: BoxFit.cover)),
+                    child: Image.network(
+                      
+                    snapshot.data.toString(),
+                    fit: BoxFit.cover,
+                    loadingBuilder: ((context, child, loadingProgress) {
+                      if(loadingProgress == null) return child;
+                      return Center(child: CircularProgressIndicator(
+                        
+                        color: Colors.grey,
+                        
+                        value: loadingProgress.expectedTotalBytes != null? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! :
+                        null
+                        ,
+                      ),);
+                    })
+                    ),
+                    
                   );
                 }
               }
