@@ -113,7 +113,7 @@ class _TopNavBarState extends State<TopNavBar> {
                     );
 
                 addPostToDB(newPost);
-                addPhotosToStorage(await medium!.getFile(), id);
+                addPhotosToStorage(await compressFile(await medium!.getFile()), id);
                 addPostToAppPosts(id);
                 Navigator.pop(context);
                 Navigator.pop(context);
