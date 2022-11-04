@@ -9,7 +9,7 @@ import 'Ignore/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-     options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
 }
@@ -19,9 +19,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
-      home: SafeArea(child: HomePage()),
+      home: HomePage(),
     );
   }
 }
