@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:media_gallery2/media_gallery2.dart' as testing;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:social_media_template/Posts/add_caption.dart';
