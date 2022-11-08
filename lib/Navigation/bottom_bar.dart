@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_template/Posts/create_post_page.dart';
 import 'package:social_media_template/Posts/post_class.dart';
+import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/user_profile_page.dart';
 import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/firebase.dart';
@@ -50,8 +51,11 @@ class _BottomBarState extends State<BottomBar> {
               )),
           TextButton(
             onPressed: () async {
-              User user = await getUserByHandle("sarah");
-              List<PostClass> posts = await getPostFromHandle("sarah");
+              print(currentUser!.user.handle);
+              User user =
+                  await getUserByHandle(currentUser!.user.handle) as User;
+              List<PostClass> posts =
+                  await getPostFromHandle(currentUser!.user.handle);
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: ((context) {
                 return UserProfilePage(
