@@ -66,7 +66,7 @@ class _PostHeaderState extends State<PostHeader> {
                                 ),
                               ),
                               Text(
-                                user.displayName,
+                                user.handle,
                                 style: nameStyle,
                               )
                             ],
