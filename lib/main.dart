@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_template/UserProfile/auth.dart';
+import 'package:social_media_template/UserProfile/sign_in_page.dart';
 import 'package:social_media_template/firebase.dart';
 import 'package:social_media_template/home_page.dart';
 import 'package:social_media_template/user_class.dart';
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: auth.currentUser == null ? SignInPage() : HomePage(),
     );
   }
 }
