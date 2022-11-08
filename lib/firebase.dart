@@ -84,19 +84,68 @@ PostClass mapToPosstClass(Map<String, dynamic> map, String id) {
 }
 
 Future<User> getUserByHandle(String handle) async {
+  User user = mockUser1;
+
   final ref = db.collection("Users").doc(handle);
   await ref.get().then((DocumentSnapshot documentSnapshot) {
-    mockUser1 =
-        mapToUser(documentSnapshot.data() as Map<String, dynamic>, handle);
+    print(documentSnapshot.data());
+    user = mapToUser(documentSnapshot.data() as Map<String, dynamic>, handle);
   });
-  return mockUser1;
+  return user;
+}
+
+Future<bool> doesUserExist(String authID) async {
+  final ref = db.collection("Users").where("authID", isEqualTo: authID);
+  bool answer = false;
+
+  await ref.get().then((value) {
+    if (value.docs.isNotEmpty) {
+      answer = true;
+    }
+  });
+  return answer;
+}
+
+Future<bool> isHanldleTaken(String handle) async {
+  final ref = db.collection("Users").doc(handle);
+  bool answer = false;
+
+  await ref.get().then((value) {
+    if (value.data() != null) {
+      answer = true;
+    }
+  });
+  return answer;
 }
 
 User mapToUser(Map<String, dynamic> map, String handle) {
   return User(
       displayName: map["displayName"],
       handle: handle,
-      profilePictureURL: map["profilePictureURL"]);
+      profilePictureURL: map["profilePictureURL"],
+      authID: map["authID"]);
+}
+
+void addNewUser(User user) {
+  db
+      .collection("Users")
+      .doc(user.handle)
+      .set(userToMap(user), SetOptions(merge: true));
+}
+
+Map<String, dynamic> userToMap(User user) {
+  Map<String, dynamic> map = {
+    "displayName": user.displayName,
+    "profilePictureURL": user.profilePictureURL,
+    "authID": user.authID
+  };
+  if (user.followerList != null) {
+    map.addAll({"followerList": user.followerList});
+  }
+  if (user.followingList != null) {
+    map.addAll({"followingList": user.followingList});
+  }
+  return map;
 }
 
 Future<List<PostClass>> getPostFromHandle(String handle) async {
@@ -116,5 +165,4 @@ void removePost(PostClass postClass) async {
   ids.remove(postClass.ID);
   db.collection("Posts").doc("all_posts").set({"posts": ids});
   db.collection("Posts").doc(postClass.ID).delete();
-  print("Finished");
 }
