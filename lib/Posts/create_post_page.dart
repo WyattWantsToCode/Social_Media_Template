@@ -18,7 +18,12 @@ class CreatePostPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: colorBackground,
-        body: CreatePostSection(),
+        body: Column(
+          children: [
+            TopNavBar(),
+            CreatePostSection(),
+          ],
+        ),
       ),
     );
   }
@@ -91,54 +96,54 @@ class _CreatePostSectionState extends State<CreatePostSection> {
 
   @override
   Widget build(BuildContext context) {
-    void updateSelectedImageID(String string) {}
     return loading
         ? CircularProgressIndicator()
-        : Column(
-            children: [
-              TopNavBar(),
-              SelectedImage(
-                key: _key,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  DropdownButton(
-                      dropdownColor: Colors.black,
-                      style: TextStyle(fontSize: 22),
-                      value: currentAlbum,
-                      items: dropDownItems,
-                      onChanged: (Album? value) {
-                        setState(() {
-                          currentAlbum = value;
-                        });
-                      }),
-                ],
-              ),
-              FutureBuilder(
-                future: getMediaPage(currentAlbum!),
-                builder: ((context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Error"),
-                      );
-                    } else if (snapshot.hasData) {
-                      return MediaGrid(
-                        mediumList: snapshot.data as List<Medium>,
-                        updateState: updateSelected,
-                      );
+        : Expanded(
+          child: Column(
+              children: [
+                SelectedImage(
+                  key: _key,
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    DropdownButton(
+                        dropdownColor: Colors.black,
+                        style: TextStyle(fontSize: 22),
+                        value: currentAlbum,
+                        items: dropDownItems,
+                        onChanged: (Album? value) {
+                          setState(() {
+                            currentAlbum = value;
+                          });
+                        }),
+                  ],
+                ),
+                FutureBuilder(
+                  future: getMediaPage(currentAlbum!),
+                  builder: ((context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text("Error"),
+                        );
+                      } else if (snapshot.hasData) {
+                        return MediaGrid(
+                          mediumList: snapshot.data as List<Medium>,
+                          updateState: updateSelected,
+                        );
+                      }
                     }
-                  }
-
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }),
-              ),
-            ],
-          );
+        
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
+                ),
+              ],
+            ),
+        );
   }
 }
 
