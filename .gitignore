@@ -53,3 +53,4 @@ app.*.map.json
 /linux
 /macos
 android/app/build.gradle
+/.VSCodeCounter
