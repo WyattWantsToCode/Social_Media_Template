@@ -4,17 +4,23 @@ import 'package:social_media_template/Navigation/bottom_bar.dart';
 import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/Posts/post_section.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
+import 'package:social_media_template/UserProfile/edit_profile_page.dart';
 import 'package:social_media_template/UserProfile/sign_in_page.dart';
 import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/storage.dart';
 import 'package:social_media_template/user_class.dart';
 
-class UserProfilePage extends StatelessWidget {
+class UserProfilePage extends StatefulWidget {
   UserProfilePage({Key? key, required this.user, required this.posts})
       : super(key: key);
   User user;
   List<PostClass> posts;
 
+  @override
+  State<UserProfilePage> createState() => _UserProfilePageState();
+}
+
+class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,14 +28,14 @@ class UserProfilePage extends StatelessWidget {
       backgroundColor: colorBackground,
       body: Column(
         children: [
-          ProfileTopBar(user: user),
+          ProfileTopBar(user: widget.user),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -38,8 +44,8 @@ class UserProfilePage extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             FutureBuilder(
-                              future:
-                                  getProfilePictureURL(user.profilePictureURL),
+                              future: getProfilePictureURL(
+                                  widget.user.profilePictureURL),
                               builder: ((context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.done) {
@@ -49,8 +55,8 @@ class UserProfilePage extends StatelessWidget {
                                     );
                                   } else if (snapshot.hasData) {
                                     return Container(
-                                      width: 100,
-                                      height: 100,
+                                      width: 90,
+                                      height: 90,
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
@@ -69,9 +75,7 @@ class UserProfilePage extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  user.postList == null
-                                      ? "0"
-                                      : user.postList!.length.toString(),
+                                  widget.posts.length.toString(),
                                   style: nameStyle.apply(fontSizeDelta: 5),
                                 ),
                                 Text(
@@ -84,9 +88,10 @@ class UserProfilePage extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  user.followerList == null
+                                  widget.user.followerList == null
                                       ? "0"
-                                      : user.followerList!.length.toString(),
+                                      : widget.user.followerList!.length
+                                          .toString(),
                                   style: nameStyle.apply(fontSizeDelta: 5),
                                 ),
                                 Text(
@@ -99,9 +104,10 @@ class UserProfilePage extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  user.followingList == null
+                                  widget.user.followingList == null
                                       ? "0"
-                                      : user.followingList!.length.toString(),
+                                      : widget.user.followingList!.length
+                                          .toString(),
                                   style: nameStyle.apply(fontSizeDelta: 5),
                                 ),
                                 Text(
@@ -114,9 +120,9 @@ class UserProfilePage extends StatelessWidget {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
                           child: Text(
-                            user.displayName,
+                            widget.user.displayName,
                             style: nameStyle,
                           ),
                         ),
@@ -127,13 +133,53 @@ class UserProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  currentUser!.user.handle == widget.user.handle
+                      ? Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: GestureDetector(
+                            onTap: () async {
+                              String imageURL = await getProfilePictureURL(
+                                  widget.user.profilePictureURL);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return EditProfilePage(
+                                  user: widget.user,
+                                  imageURL: imageURL,
+                                );
+                              })).then((value) {
+                                setState(() {});
+                              });
+                            },
+                            child: Container(
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                    color: colorDarkGray),
+                                child: Center(
+                                  child: Text(
+                                    "Edit Profile",
+                                    style: styleDescription,
+                                  ),
+                                )),
+                          ),
+                        )
+                      : Container(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Container(
+                      width: double.infinity,
+                      height: .2,
+                      color: Colors.grey,
+                    ),
+                  ),
                   ListView.builder(
                       physics:
                           PageScrollPhysics(parent: BouncingScrollPhysics()),
                       shrinkWrap: true,
-                      itemCount: posts.length,
+                      itemCount: widget.posts.length,
                       itemBuilder: ((context, index) {
-                        return SpecificPost(post: posts[index]);
+                        return SpecificPost(post: widget.posts[index]);
                       }))
                 ],
               ),
