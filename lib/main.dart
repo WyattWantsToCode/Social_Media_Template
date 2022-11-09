@@ -19,8 +19,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  void checkForUser() async {
+    if (auth.currentUser != null) {
+      setCurrentUser(await getUserByHandle(auth.currentUser!.displayName!));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkForUser();
     return MaterialApp(
       home: auth.currentUser == null ? SignInPage() : HomePage(),
     );
