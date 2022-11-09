@@ -40,7 +40,7 @@ class _PostFooterState extends State<PostFooter> {
           padding: const EdgeInsets.all(10),
           child: Text(
             widget.post.description,
-            style: nameStyle,
+            style: styleDescription,
           ),
         ),
         Padding(
