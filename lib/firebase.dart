@@ -57,7 +57,7 @@ Future<List<PostClass>> getFivePosts(int? seed) async {
       }));
     }
   });
-  return posts.sublist(0, 5);
+  return posts;
 }
 
 Future<PostClass> getPostByID(String id) async {
@@ -155,6 +155,9 @@ Future<List<PostClass>> getPostFromHandle(String handle) async {
     value.docs.forEach((element) {
       posts.add(mapToPosstClass(element.data(), element.id));
     });
+    posts.sort(((a, b) {
+      return b.timestamp.compareTo(a.timestamp);
+    }));
   });
   return posts;
 }
