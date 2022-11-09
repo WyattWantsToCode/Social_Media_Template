@@ -29,7 +29,21 @@ Future<Uint8List> compressFile(File file) async {
   return result!;
 }
 
-void removeImageFromStorage(String postID)  async{
+void removeImageFromStorage(String postID) async {
   final ref = storage.ref("Posts").child(postID);
   await ref.delete();
+}
+
+void removeProfilePicFromStorage(String handle) async {
+  final ref = storage.ref("Profile_Pictures").child(handle);
+  await ref.delete();
+}
+
+Future<void> addProfilePictureToStorage(Uint8List uint8list, String id) async {
+  final  ref = await storage
+      .ref("Profile_Pictures")
+      .child(id)
+      .putData(uint8list)
+      .then((p0) {   
+      });
 }
