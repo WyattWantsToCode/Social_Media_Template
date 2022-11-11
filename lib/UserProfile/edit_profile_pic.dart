@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_media_template/Posts/create_post_page.dart';
 import 'package:social_media_template/UserProfile/edit_profile_page.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/user_class.dart';
 
 class EditProfilePicPage extends StatefulWidget {
@@ -52,8 +52,7 @@ class _EditProfilePicPageState extends State<EditProfilePicPage> {
                                         await selectedMediumID!.getFile()),
                                     widget.user.profilePictureURL);
 
-                                String string = await getProfilePictureURL(
-                                    widget.user.profilePictureURL);
+                                
                                 Navigator.pop(context);
                               },
                               child: Icon(

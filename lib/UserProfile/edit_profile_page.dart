@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_template/Firebase/post.dart';
+import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/Posts/create_post_page.dart';
+import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/edit_profile_pic.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/user_class.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -30,7 +33,52 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Container(
             width: double.infinity,
           ),
-          EditPageTopNavBar(),
+          Container(
+            child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 32,
+                      )),
+                  Text(
+                    "Edit Profile",
+                    style: TextStyle(color: Colors.white, fontSize: 22),
+                  ),
+                  TextButton(
+                      onPressed: () async {
+                        if (await isHanldleTaken(handleController.text)) {
+                        } else {
+                          if (widget.user.handle != handleController.text) {
+                            await updateUsersPostToNewHandle(
+                                widget.user.handle, handleController.text);
+                            await updateAuthDisplayName(handleController.text);
+                          }
+                          await removeUser(widget.user.handle);
+                     
+                          widget.user.handle = handleController.text;
+                 
+                          widget.user.displayName = displayNameController.text;
+                          await addNewUser(widget.user);
+
+                          setCurrentUser(widget.user);
+
+                          Navigator.pop(context, widget.user);
+                        }
+                      },
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 32,
+                      )),
+                ]),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: Column(
@@ -94,48 +142,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ]),
       ),
-    );
-  }
-}
-
-class EditPageTopNavBar extends StatefulWidget {
-  EditPageTopNavBar({Key? key}) : super(key: key);
-
-  @override
-  State<EditPageTopNavBar> createState() => _EditPageTopNavBarState();
-}
-
-class _EditPageTopNavBarState extends State<EditPageTopNavBar> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 32,
-                )),
-            Text(
-              "Edit Profile",
-              style: TextStyle(color: Colors.white, fontSize: 22),
-            ),
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 32,
-                )),
-          ]),
     );
   }
 }
