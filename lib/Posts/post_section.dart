@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_template/Firebase/post.dart';
 import 'package:social_media_template/Posts/Widgets/body.dart';
 import 'package:social_media_template/Posts/Widgets/footer.dart';
 import 'package:social_media_template/Posts/Widgets/header.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/firebase.dart';
+import 'package:social_media_template/Firebase/firebase.dart';
 import 'package:social_media_template/Posts/post_class.dart';
-import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/user_class.dart';
 
 class SpecificPostSection extends StatelessWidget {
@@ -26,9 +27,7 @@ class SpecificPostSection extends StatelessWidget {
             posts = snapshot.data as List<PostClass>;
 
             return ListView.builder(
-                physics: PageScrollPhysics(
-                  parent: BouncingScrollPhysics()
-                ),
+                physics: PageScrollPhysics(parent: BouncingScrollPhysics()),
                 shrinkWrap: true,
                 itemCount: posts.length,
                 itemBuilder: ((context, index) {
@@ -63,10 +62,10 @@ class _SpecificPostState extends State<SpecificPost> {
         PostHeader(post: widget.post),
         PostBody(post: widget.post),
         PostFooter(post: widget.post),
-        Divider(color: Colors.white30,)
+        Divider(
+          color: Colors.white30,
+        )
       ],
     );
   }
 }
-
-

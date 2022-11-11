@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/firebase.dart';
+import 'package:social_media_template/Firebase/firebase.dart';
 import 'package:social_media_template/home_page.dart';
 import 'package:social_media_template/user_class.dart';
 

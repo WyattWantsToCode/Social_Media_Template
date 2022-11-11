@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_gallery/photo_gallery.dart';
+import 'package:social_media_template/Firebase/post.dart';
 import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/firebase.dart';
-import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/Firebase/firebase.dart';
+import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/user_class.dart';
 import 'package:uuid/uuid.dart';
 
@@ -110,11 +111,11 @@ class _TopNavBarState extends State<TopNavBar> {
                     description: captionController.text,
                     likes: 0,
                     user: currentUser!.user.handle,
-                    timestamp: Timestamp.now()
-                    );
+                    timestamp: Timestamp.now());
 
                 addPostToDB(newPost);
-                addPhotosToStorage(await compressFile(await medium!.getFile()), id);
+                addPhotosToStorage(
+                    await compressFile(await medium!.getFile()), id);
                 addPostToAppPosts(id);
                 Navigator.pop(context);
                 Navigator.pop(context);

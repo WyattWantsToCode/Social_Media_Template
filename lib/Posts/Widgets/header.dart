@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_template/Firebase/post.dart';
+import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/UserProfile/user_profile_page.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/firebase.dart';
-import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/Firebase/firebase.dart';
+import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/user_class.dart';
 
 class PostHeader extends StatefulWidget {

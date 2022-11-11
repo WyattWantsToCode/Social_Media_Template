@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_template/Posts/post_class.dart';
-import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/Firebase/storage.dart';
 
 class PostBody extends StatefulWidget {
   PostBody({

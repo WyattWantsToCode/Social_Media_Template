@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/create_user_page.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/firebase.dart';
+import 'package:social_media_template/Firebase/firebase.dart';
 import 'package:social_media_template/home_page.dart';
 import 'package:social_media_template/story_class.dart';
 import 'package:social_media_template/user_class.dart';
@@ -39,8 +40,8 @@ class _SignInPageState extends State<SignInPage> {
                       signInWithGoogle().then((value) async {
                         if (value != null) {
                           if (await doesUserExist(value.uid)) {
-                            setCurrentUser(
-                                await getUserByHandle(value.displayName as String));
+                            setCurrentUser(await getUserByHandle(
+                                value.displayName as String));
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: ((context) {
                               return HomePage();
