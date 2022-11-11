@@ -28,6 +28,6 @@ void setCurrentUser(userClass.User user) {
       storiesWatched: <userClass.User>[]);
 }
 
-void updateAuthDisplayName(String name) {
-  auth.currentUser!.updateDisplayName(name);
+Future<void> updateAuthDisplayName(String name) async {
+  await auth.currentUser!.updateDisplayName(name);
 }
