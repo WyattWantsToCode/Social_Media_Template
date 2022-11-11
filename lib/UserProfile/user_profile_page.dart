@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_media_template/Firebase/post.dart';
 import 'package:social_media_template/Navigation/bottom_bar.dart';
 import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/Posts/post_section.dart';
@@ -7,7 +8,7 @@ import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/edit_profile_page.dart';
 import 'package:social_media_template/UserProfile/sign_in_page.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/storage.dart';
+import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/user_class.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -21,8 +22,16 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
+  User? result;
+
   @override
   Widget build(BuildContext context) {
+    if (result != null) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return UserProfilePage(user: result as User, posts: widget.posts);
+      }));
+    }
+    print(result);
     return SafeArea(
         child: Scaffold(
       backgroundColor: colorBackground,
@@ -146,8 +155,21 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                   user: widget.user,
                                   imageURL: imageURL,
                                 );
-                              })).then((value) {
-                                setState(() {});
+                              })).then((value) async {
+                                if (value != null) {
+                                  List<PostClass> posts =
+                                      await getPostFromHandle(
+                                          (value as User).handle);
+
+                            
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return UserProfilePage(
+                                        user: value as User, posts: posts);
+                                  }));
+                                } else {
+                                  setState(() {});
+                                }
                               });
                             },
                             child: Container(
