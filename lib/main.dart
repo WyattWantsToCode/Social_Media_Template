@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/sign_in_page.dart';
-import 'package:social_media_template/firebase.dart';
+import 'package:social_media_template/Firebase/firebase.dart';
 import 'package:social_media_template/home_page.dart';
 import 'package:social_media_template/user_class.dart';
 import 'package:firebase_core/firebase_core.dart';
