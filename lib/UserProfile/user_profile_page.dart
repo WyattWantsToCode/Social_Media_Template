@@ -142,7 +142,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       ],
                     ),
                   ),
-                  currentUser!.user.handle == widget.user.handle
+                  currentUser!.user.id == widget.user.id
                       ? Padding(
                           padding: const EdgeInsets.all(20),
                           child: GestureDetector(
@@ -158,10 +158,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               })).then((value) async {
                                 if (value != null) {
                                   List<PostClass> posts =
-                                      await getPostFromHandle(
-                                          (value as User).handle);
+                                      await getPostFromUserID(
+                                          (value as User).id);
 
-                            
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
                                     return UserProfilePage(

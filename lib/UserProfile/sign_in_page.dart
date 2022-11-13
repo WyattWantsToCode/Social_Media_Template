@@ -40,8 +40,8 @@ class _SignInPageState extends State<SignInPage> {
                       signInWithGoogle().then((value) async {
                         if (value != null) {
                           if (await doesUserExist(value.uid)) {
-                            setCurrentUser(await getUserByHandle(
-                                value.displayName as String));
+                            setCurrentUser(
+                                await getUserByID(value.displayName as String));
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: ((context) {
                               return HomePage();

@@ -56,11 +56,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         if (await isHanldleTaken(handleController.text)) {
                         } else {
                           if (widget.user.handle != handleController.text) {
-                            await updateUsersPostToNewHandle(
-                                widget.user.handle, handleController.text);
-                            await updateAuthDisplayName(handleController.text);
+                            
+                            
                           }
-                          await removeUser(widget.user.handle);
+                          
                      
                           widget.user.handle = handleController.text;
                  

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/Posts/create_post_page.dart';
 import 'package:social_media_template/UserProfile/edit_profile_page.dart';
 import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/user_class.dart';
+import 'package:uuid/uuid.dart';
 
 class EditProfilePicPage extends StatefulWidget {
   EditProfilePicPage({Key? key, required this.user}) : super(key: key);
@@ -45,14 +47,16 @@ class _EditProfilePicPageState extends State<EditProfilePicPage> {
                               onPressed: () async {
                                 loading = true;
                                 setState(() {});
+                                
                                 removeProfilePicFromStorage(
                                     widget.user.profilePictureURL);
+                                
+ addNewUser(widget.user);
                                 await addProfilePictureToStorage(
                                     await compressFile(
                                         await selectedMediumID!.getFile()),
                                     widget.user.profilePictureURL);
 
-                                
                                 Navigator.pop(context);
                               },
                               child: Icon(

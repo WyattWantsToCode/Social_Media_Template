@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_media_template/Firebase/post.dart';
 import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/Posts/post_class.dart';
+import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/user_profile_page.dart';
 import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/Firebase/firebase.dart';
@@ -20,7 +21,7 @@ class _PostHeaderState extends State<PostHeader> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getUserByHandle(widget.post.user),
+      future: getUserByID(widget.post.user),
       builder: ((context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -45,7 +46,7 @@ class _PostHeaderState extends State<PostHeader> {
                         GestureDetector(
                           onTap: () async {
                             List<PostClass> posts =
-                                await getPostFromHandle(user.handle);
+                                await getPostFromUserID(user.id);
                             Navigator.push(context,
                                 MaterialPageRoute(builder: ((context) {
                               return UserProfilePage(user: user, posts: posts);
@@ -76,6 +77,7 @@ class _PostHeaderState extends State<PostHeader> {
                         ),
                         GestureDetector(
                           onTap: (() {
+                            
                             showMenu(context, widget.post);
                           }),
                           child: Padding(
@@ -142,13 +144,13 @@ void showMenu(BuildContext context, PostClass postClass) {
               color: colorDarkGray),
           child: Column(
             children: [
-              buttonChoice(Icons.delete, "Delete", () {
+              postClass.user == currentUser!.user.id ? buttonChoice(Icons.delete, "Delete", () {
                 removePost(postClass);
                 for (var photoID in postClass.imageURLs) {
                   removeImageFromStorage(photoID);
                 }
                 Navigator.pop(context);
-              })
+              }) : Container(),
             ],
           ),
         );
