@@ -4,10 +4,10 @@ import 'package:social_media_template/Posts/post_class.dart';
 
 Future<List<String>> getAllPostIDs() async {
   List<String> result = <String>[];
-  final ref = db.collection("Posts").doc("all_posts");
+  final ref = db.collection("Posts");
   await ref.get().then((value) {
-    for (var postID in value.data()!["posts"]) {
-      result.add(postID.toString());
+    for (var doc in value.docs) {
+      result.add(doc.id);
     }
 
     return result;
@@ -75,9 +75,9 @@ PostClass mapToPosstClass(Map<String, dynamic> map, String id) {
       timestamp: map["timeStamp"]);
 }
 
-Future<List<PostClass>> getPostFromHandle(String handle) async {
+Future<List<PostClass>> getPostFromUserID(String id) async {
   List<PostClass> posts = <PostClass>[];
-  final ref = db.collection("Posts").where("user", isEqualTo: handle);
+  final ref = db.collection("Posts").where("user", isEqualTo: id);
   await ref.get().then((value) {
     value.docs.forEach((element) {
       posts.add(mapToPosstClass(element.data(), element.id));
@@ -98,7 +98,7 @@ void removePost(PostClass postClass) async {
 
 Future<void> updateUsersPostToNewHandle(
     String oldHandle, String newHandle) async {
-  List<PostClass> allPosts = await getPostFromHandle(oldHandle);
+  List<PostClass> allPosts = await getPostFromUserID(oldHandle);
   for (PostClass postClass in allPosts) {
     postClass.user = newHandle;
     await addPostToDB(postClass);
