@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social_media_template/Firebase/firebase.dart';
 import 'package:social_media_template/user_class.dart';
 
-Future<User> getUserByHandle(String handle) async {
+Future<User> getUserByID(String ID) async {
   User user = mockUser1;
-
-  final ref = db.collection("Users").doc(handle);
-  await ref.get().then((DocumentSnapshot documentSnapshot) {
-    user = mapToUser(documentSnapshot.data() as Map<String, dynamic>, handle);
+  final ref = db.collection("Users").doc(ID);
+  await ref.get().then((value) {
+    user = mapToUser(value.data() as Map<String, dynamic>, ID);
   });
   return user;
 }
@@ -36,10 +35,11 @@ Future<bool> isHanldleTaken(String handle) async {
   return answer;
 }
 
-User mapToUser(Map<String, dynamic> map, String handle) {
+User mapToUser(Map<String, dynamic> map, String id) {
   return User(
+      id: id,
       displayName: map["displayName"],
-      handle: handle,
+      handle: map["handle"],
       profilePictureURL: map["profilePictureURL"],
       authID: map["authID"]);
 }
@@ -47,12 +47,13 @@ User mapToUser(Map<String, dynamic> map, String handle) {
 Future<void> addNewUser(User user) async {
   await db
       .collection("Users")
-      .doc(user.handle)
+      .doc(user.id)
       .set(userToMap(user), SetOptions(merge: true));
 }
 
 Map<String, dynamic> userToMap(User user) {
   Map<String, dynamic> map = {
+    "handle": user.handle,
     "displayName": user.displayName,
     "profilePictureURL": user.profilePictureURL,
     "authID": user.authID
@@ -66,6 +67,6 @@ Map<String, dynamic> userToMap(User user) {
   return map;
 }
 
-Future<void> removeUser(String handle) async {
-  await db.collection("Users").doc(handle).delete();
+Future<void> removeUser(String id) async {
+  await db.collection("Users").doc(id).delete();
 }
