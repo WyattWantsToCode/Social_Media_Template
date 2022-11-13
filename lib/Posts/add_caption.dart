@@ -110,13 +110,12 @@ class _TopNavBarState extends State<TopNavBar> {
                     imageURLs: <String>[id],
                     description: captionController.text,
                     likes: 0,
-                    user: currentUser!.user.handle,
+                    user: currentUser!.user.id,
                     timestamp: Timestamp.now());
 
                 addPostToDB(newPost);
                 addPhotosToStorage(
                     await compressFile(await medium!.getFile()), id);
-                addPostToAppPosts(id);
                 Navigator.pop(context);
                 Navigator.pop(context);
               },

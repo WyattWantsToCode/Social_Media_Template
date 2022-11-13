@@ -53,11 +53,9 @@ class _BottomBarState extends State<BottomBar> {
               )),
           TextButton(
             onPressed: () async {
-              
-              User user =
-                  await getUserByHandle(currentUser!.user.handle) as User;
+              User user = await getUserByID(currentUser!.user.id) as User;
               List<PostClass> posts =
-                  await getPostFromHandle(currentUser!.user.handle);
+                  await getPostFromUserID(currentUser!.user.id);
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: ((context) {
                 return UserProfilePage(

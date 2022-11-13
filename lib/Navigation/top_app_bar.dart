@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:social_media_template/Firebase/functions.dart';
 import 'package:social_media_template/Posts/create_post_page.dart';
 import 'package:social_media_template/UserProfile/user_profile_page.dart';
 
@@ -11,8 +12,13 @@ class TopAppBar extends StatefulWidget {
 }
 
 class _TopAppBarState extends State<TopAppBar> {
+  String title = "Social Media";
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
       child: Row(
@@ -20,20 +26,21 @@ class _TopAppBarState extends State<TopAppBar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Social Media",
+            title,
             style: GoogleFonts.pacifico(
                 textStyle: TextStyle(color: Colors.white, fontSize: 22)),
           ),
           Row(
             children: [
-              GestureDetector(child:  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.notifications_outlined,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  )),
+              GestureDetector(
+                  child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(
+                  Icons.notifications_outlined,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              )),
               GestureDetector(
                   onTap: () {
                     Navigator.push(context,
@@ -49,7 +56,6 @@ class _TopAppBarState extends State<TopAppBar> {
                       size: 24,
                     ),
                   )),
-                  
             ],
           )
         ],
