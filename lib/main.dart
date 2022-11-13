@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/sign_in_page.dart';
@@ -21,8 +22,9 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   void checkForUser() async {
+    
     if (auth.currentUser != null) {
-      setCurrentUser(await getUserByHandle(auth.currentUser!.displayName!));
+      setCurrentUser(await getUserByID(auth.currentUser!.displayName!));
     }
   }
 
