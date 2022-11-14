@@ -17,27 +17,10 @@ class _PostFooterState extends State<PostFooter> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Icon(
-                  Icons.thumb_up_alt_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                widget.post.likes.toString(),
-                style: nameStyle,
-              )
-            ],
-          ),
-        ),
+        
         
         Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Text(
             widget.post.description,
             style: styleDescription,
