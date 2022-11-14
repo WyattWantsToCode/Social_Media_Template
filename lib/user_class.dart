@@ -1,5 +1,4 @@
 import 'package:social_media_template/Posts/post_class.dart';
-import 'package:social_media_template/story_class.dart';
 
 class User {
   String id;
@@ -7,20 +6,16 @@ class User {
   String handle;
   String profilePictureURL;
   String authID;
-  List<String>? postList;
-  List<String>? followerList;
-  List<String>? followingList;
+  List<String> friendsIDs;
 
-  User(
-      {
-        required this.id,
-        required this.displayName,
-      required this.handle,
-      required this.profilePictureURL,
-      required this.authID,
-      this.postList,
-      this.followerList,
-      this.followingList});
+  User({
+    required this.id,
+    required this.displayName,
+    required this.handle,
+    required this.profilePictureURL,
+    required this.authID,
+    required this.friendsIDs
+  });
 }
 
 class CurrentUser {
@@ -32,17 +27,20 @@ class CurrentUser {
 }
 
 User mockUser1 = User(
-  id: "zxcvbnm",
+    id: "zxcvbnm",
     displayName: "Sammy",
     handle: "sammy",
     profilePictureURL:
         "https://drive.google.com/uc?export=view&id=11rSmO36l7o-V2B5ONLjvDS-nCz7cuNeh",
-    authID: "sdfghjkla");
+    authID: "sdfghjkla",
+    friendsIDs: <String>[]
+    );
 
 User mockUser2 = User(
-  id: "xcvbnmz",
+    id: "xcvbnmz",
     displayName: "Sarah",
     handle: "sarah",
     profilePictureURL:
         "https://drive.google.com/uc?export=view&id=1XWCJACYGtADzEWYAJTs484WTOLveesVY",
-    authID: "asdfghjkl");
+    authID: "asdfghjkl",
+    friendsIDs: <String>[]);
