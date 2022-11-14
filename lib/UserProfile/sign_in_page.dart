@@ -7,7 +7,7 @@ import 'package:social_media_template/UserProfile/create_user_page.dart';
 import 'package:social_media_template/colors.dart';
 import 'package:social_media_template/Firebase/firebase.dart';
 import 'package:social_media_template/home_page.dart';
-import 'package:social_media_template/story_class.dart';
+
 import 'package:social_media_template/user_class.dart';
 
 class SignInPage extends StatefulWidget {
