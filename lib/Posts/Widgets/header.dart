@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_template/BeReals/bereal_section.dart';
 import 'package:social_media_template/Firebase/post.dart';
 import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/Posts/post_class.dart';
@@ -30,16 +31,7 @@ class _PostHeaderState extends State<PostHeader> {
             );
           } else if (snapshot.hasData) {
             User user = snapshot.data as User;
-            return FutureBuilder(
-              future: getProfilePictureURL(user.profilePictureURL),
-              builder: ((context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text("Error"),
-                    );
-                  } else if (snapshot.hasData) {
-                    return Row(
+            return Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -56,16 +48,12 @@ class _PostHeaderState extends State<PostHeader> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                child: Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              snapshot.data as String),
-                                          fit: BoxFit.cover)),
+                                    horizontal: 10, vertical: 10),
+                                child: BeRealButton(
+                                  user: user,
+                                  ringOn: true,
+                                  scale: .55,
+                                  nameUnderOne: false,
                                 ),
                               ),
                               Text(
@@ -91,14 +79,6 @@ class _PostHeaderState extends State<PostHeader> {
                         )
                       ],
                     );
-                  }
-                }
-
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }),
-            );
           }
         }
 
