@@ -18,21 +18,48 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  void checkForUser() async {
-    
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<String> checkForUser() async {
+
     if (auth.currentUser != null) {
+
       setCurrentUser(await getUserByID(auth.currentUser!.displayName!));
     }
+    return "Done";
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    checkForUser();
     return MaterialApp(
-      home: auth.currentUser == null ? SignInPage() : HomePage(),
-    );
+        home: FutureBuilder(
+      future: checkForUser(),
+      builder: ((context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error"),
+            );
+          } else if (snapshot.hasData) {
+            return auth.currentUser == null ? SignInPage() : HomePage();
+          }
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }),
+    ));
   }
 }
