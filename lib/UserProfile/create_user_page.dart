@@ -39,8 +39,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   children: [
                     Text(
                       "Social Media",
-                      style:
-                          GoogleFonts.pacifico(fontSize: 48, color: Colors.white),
+                      style: GoogleFonts.pacifico(
+                          fontSize: 48, color: Colors.white),
                     ),
                     Text(
                       "Sign up to see everything you want to see",
@@ -103,8 +103,10 @@ class _CreateUserPageState extends State<CreateUserPage> {
                                   displayName: displatNameController.text,
                                   handle: handleController.text,
                                   profilePictureURL: id,
-                                  authID: auth.currentUser!.uid);
+                                  authID: auth.currentUser!.uid,
+                                  friendsIDs: <String>[]);
                               addNewUser(user);
+                              addUserIDToUserEXT(user.id, <String, dynamic>{});
                               setCurrentUser(user);
                               updateAuthDisplayName(user.id);
                               addProfilePictureToStorage(
@@ -122,7 +124,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
                           height: 50,
                           decoration: BoxDecoration(
                               color: colorDarkGray,
-                              borderRadius: BorderRadius.all(Radius.circular(5))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
                           child: Center(
                             child: Text(
                               "Sign Up",
