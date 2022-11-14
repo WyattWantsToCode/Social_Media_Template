@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_media_template/BeReals/bereal_section.dart';
 import 'package:social_media_template/Firebase/post.dart';
+import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/Navigation/bottom_bar.dart';
 import 'package:social_media_template/Posts/post_class.dart';
 import 'package:social_media_template/Posts/post_section.dart';
@@ -52,35 +54,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            FutureBuilder(
-                              future: getProfilePictureURL(
-                                  widget.user.profilePictureURL),
-                              builder: ((context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  if (snapshot.hasError) {
-                                    return const Center(
-                                      child: Text("Error"),
-                                    );
-                                  } else if (snapshot.hasData) {
-                                    return Container(
-                                      width: 90,
-                                      height: 90,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  snapshot.data as String))),
-                                    );
-                                  }
-                                }
-
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }),
-                            ),
+                            BeRealButton(user: widget.user, ringOn: true, scale: 1.3, nameUnderOne: false,),
                             Column(
                               children: [
                                 Text(
@@ -97,14 +71,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             Column(
                               children: [
                                 Text(
-                                  widget.user.followerList == null
-                                      ? "0"
-                                      : widget.user.followerList!.length
-                                          .toString(),
+                                  widget.user.friendsIDs.length.toString(),
                                   style: nameStyle.apply(fontSizeDelta: 5),
                                 ),
                                 Text(
-                                  "Followers",
+                                  "Friends",
                                   style:
                                       styleDescription.apply(fontSizeDelta: 0),
                                 )
@@ -113,14 +84,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             Column(
                               children: [
                                 Text(
-                                  widget.user.followingList == null
-                                      ? "0"
-                                      : widget.user.followingList!.length
-                                          .toString(),
+                                  widget.user.friendsIDs.length.toString(),
                                   style: nameStyle.apply(fontSizeDelta: 5),
                                 ),
                                 Text(
-                                  "Following",
+                                  "number",
                                   style:
                                       styleDescription.apply(fontSizeDelta: 0),
                                 )
@@ -185,7 +153,29 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                 )),
                           ),
                         )
-                      : Container(),
+                      : Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: GestureDetector(
+                            onTap: (() {
+                              
+                              sendFriendRequest(
+                                  currentUser!.user.id, widget.user.id);
+                            }),
+                            child: Container(
+                              width: double.infinity,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  color: colorDarkGray,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Center(
+                                  child: Text(
+                                "Become Friends",
+                                style: nameStyle,
+                              )),
+                            ),
+                          ),
+                        ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Container(
