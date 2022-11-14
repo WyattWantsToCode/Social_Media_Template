@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:social_media_template/Posts/post_class.dart';
-import 'package:social_media_template/story_class.dart';
 import 'package:social_media_template/user_class.dart' as userClass;
 
 final auth = FirebaseAuth.instance;
