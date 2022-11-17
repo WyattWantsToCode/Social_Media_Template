@@ -70,10 +70,11 @@ class _CreatePostSectionState extends State<CreatePostSection> {
         selectedMediumID = firstImageID;
         loading = false;
       });
+    } else {
+      setState(() {
+        loading = false;
+      });
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   Future<bool> _promptPermission() async {
@@ -99,7 +100,7 @@ class _CreatePostSectionState extends State<CreatePostSection> {
     return loading
         ? CircularProgressIndicator()
         : Expanded(
-          child: Column(
+            child: Column(
               children: [
                 SelectedImage(
                   key: _key,
@@ -135,7 +136,7 @@ class _CreatePostSectionState extends State<CreatePostSection> {
                         );
                       }
                     }
-        
+
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -143,7 +144,7 @@ class _CreatePostSectionState extends State<CreatePostSection> {
                 ),
               ],
             ),
-        );
+          );
   }
 }
 
