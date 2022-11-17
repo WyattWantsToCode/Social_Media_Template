@@ -19,6 +19,14 @@ Future<String> getProfilePictureURL(String string) async {
   return url;
 }
 
+Future<List<String>> getBeRealPicturesURLs(String id1, String id2) async {
+  final ref1 = storage.ref("BeReals").child(id1);
+  var url1 = await ref1.getDownloadURL();
+  final ref2 = storage.ref("BeReals").child(id2);
+  var url2 = await ref2.getDownloadURL();
+  return <String>[url1, url2];
+}
+
 void addPhotosToStorage(Uint8List uint8list, String id) {
   final ref = storage.ref("Posts").child(id).putData(uint8list);
 }
@@ -27,6 +35,12 @@ Future<Uint8List> compressFile(File file) async {
   var result = await FlutterImageCompress.compressWithFile(file.absolute.path,
       minWidth: 1080, minHeight: 1080, quality: 50);
   return result!;
+}
+
+Future<Uint8List> compressUnit8List(Uint8List uint8list) async {
+  var result = await FlutterImageCompress.compressWithList(uint8list,
+      minWidth: 1080, minHeight: 1080, quality: 50);
+  return result;
 }
 
 void removeImageFromStorage(String postID) async {
@@ -40,10 +54,13 @@ void removeProfilePicFromStorage(String handle) async {
 }
 
 Future<void> addProfilePictureToStorage(Uint8List uint8list, String id) async {
-  final  ref = await storage
+  final ref = await storage
       .ref("Profile_Pictures")
       .child(id)
       .putData(uint8list)
-      .then((p0) {   
-      });
+      .then((p0) {});
+}
+
+Future<void> addBeRealPictureToStorage(Uint8List uint8list, String id) async {
+  final ref = await storage.ref("BeReals").child(id).putData(uint8list);
 }
