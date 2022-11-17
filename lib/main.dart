@@ -1,6 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_media_template/BeReals/take_bereal_picture_page.dart';
 import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/sign_in_page.dart';
@@ -15,6 +17,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  cameras = await availableCameras();
   runApp(MyApp());
 }
 
