@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_template/BeReals/bereals_page.dart';
+import 'package:social_media_template/BeReals/bereals_page.dart.txt';
 import 'package:social_media_template/BeReals/post_bereal_page.dart';
-import 'package:social_media_template/BeReals/take_bereal_picture_page.dart';
+import 'package:social_media_template/BeReals/take_bereal_picture_page.dart.txt';
 import 'package:social_media_template/Firebase/storage.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/colors.dart';
-import 'package:social_media_template/user_class.dart';
+import 'package:social_media_template/UserProfile/user_class.dart';
 
 class BeRealSection extends StatelessWidget {
   BeRealSection({Key? key, required this.user}) : super(key: key);
