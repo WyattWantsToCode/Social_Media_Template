@@ -2,14 +2,16 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:social_media_template/BeReals/take_bereal_picture_page.dart';
+import 'package:social_media_template/Firebase/prompt.dart';
 import 'package:social_media_template/Firebase/user.dart';
 import 'package:social_media_template/UserProfile/auth.dart';
 import 'package:social_media_template/UserProfile/sign_in_page.dart';
 import 'package:social_media_template/Firebase/firebase.dart';
+import 'package:social_media_template/camera.dart';
 import 'package:social_media_template/home_page.dart';
-import 'package:social_media_template/user_class.dart';
+import 'package:social_media_template/UserProfile/user_class.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:social_media_template/prompt_class.dart';
 import 'Ignore/firebase_options.dart';
 
 void main() async {
@@ -18,6 +20,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   cameras = await availableCameras();
+  currentPrompt = await getAllPrompts();
   runApp(MyApp());
 }
 
@@ -30,9 +33,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<String> checkForUser() async {
-
     if (auth.currentUser != null) {
-
       setCurrentUser(await getUserByID(auth.currentUser!.displayName!));
     }
     return "Done";
