@@ -127,7 +127,7 @@ class _BeRealPicturesState extends State<BeRealPictures> {
       },
       child: Container(
         width: 120,
-        height: 120 * 1.8,
+        height: 120 * 1.6,
         decoration: BoxDecoration(
             border: Border.all(color: Colors.black54, width: 3),
             borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -143,9 +143,9 @@ class _BeRealPicturesState extends State<BeRealPictures> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width * 1.8,
+              height: MediaQuery.of(context).size.width * 1.6,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  
                   image: widget.image2),
             ),
           ],
@@ -173,18 +173,18 @@ class _BeRealPicturesState extends State<BeRealPictures> {
                 setState(() {
                 
                   
-                  if (newOffset.dx < 0) {
+                  if (newOffset.dx < 30) {
                     newOffset = Offset(30, newOffset.dy);
                   }
-                  if (newOffset.dy < 0) {
+                  if (newOffset.dy < 30) {
                     newOffset = Offset(newOffset.dx, 30);
                   }
-                  if (newOffset.dx > size.width - 120) {
+                  if (newOffset.dx > size.width - 120 -30) {
                     newOffset = Offset(size.width - 120 - 30, newOffset.dy);
                   }
-                  if (newOffset.dy > size.height - 120 * 1.8) {
+                  if (newOffset.dy > (size.height - 120 * 1.6 - 30)) {
                     newOffset =
-                        Offset(newOffset.dx, size.height - 120 * 1.8 - 30);
+                        Offset(newOffset.dx, size.height - 120 * 1.6 - 30);
                   }
                   offset = newOffset;
                 });
